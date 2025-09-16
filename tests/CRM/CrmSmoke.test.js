@@ -20,9 +20,9 @@ test ('Login', async ({page}) => {
   }
  else {
    // Step 5: Output the captured URL (optional)
-    console.error('Login Failed Unexpectedly')
+    console.error('Login Failed Unexpectedly');
     console.error('Captured URL After Login:', currentUrl);
-    console.log('Expected Url After Login:', expectedUrl )
+    console.log('Expected Url After Login:', expectedUrl );
 
      }
 });
