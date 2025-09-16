@@ -1,5 +1,7 @@
-// loginHelper.js
 async function loginToCRM(page) {
+  const { trackAPIs } = require('../helpers/apiHelper');
+  const { requestData, responseData } = await trackAPIs(page);
+
   await page.goto('https://crm.staging.trillium.health');
   await page.getByRole('spinbutton').fill('93722');
   await page.locator('input[name="userName"]').fill('vineeth93722');
@@ -19,7 +21,19 @@ async function loginToCRM(page) {
     console.error('❌ Login Failed');
     console.error('Captured URL:', currentUrl);
     console.error('Expected URL:', expectedUrl);
+
+    // Always print tracked APIs
+  console.log('--- API Requests Collected ---');
+  console.log(requestData);
+
+  console.log('--- API Responses Collected ---');
+  console.log(responseData);
+
+  // Return them so tests can use them
+  return { requestData, responseData };
   }
+
+  
 }
 
 module.exports = { loginToCRM };
