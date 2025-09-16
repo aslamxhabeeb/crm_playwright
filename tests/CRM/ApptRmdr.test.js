@@ -1,13 +1,14 @@
 import { test, expect } from '@playwright/test';
-const { loginToCRM } = require('../helpers/crmStagingLogin');
+import loginToCRM from '../helpers/crmStagingLogin';
 
 test('Smoke: CRM Login + API Tracking', async ({ page }) => {
-loginToCRM(page);
+await loginToCRM(page);
  
 });
 
 test('Create and delete appointment in CRM Scheduler', async ({ page }) => {
-  // Navigate to Scheduler
+  
+     // Navigate to Scheduler
   await page.locator('.appointment__addBtn').click();
 
   // Fill Appointment Reason

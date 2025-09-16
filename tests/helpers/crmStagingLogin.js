@@ -2,7 +2,9 @@ async function loginToCRM(page) {
   const { trackAPIs } = require('../helpers/apiHelper');
   const { requestData, responseData } = await trackAPIs(page);
 
-  await page.goto('https://crm.staging.trillium.health');
+  await page.goto('https://crm.staging.trillium.health', {
+   waitUntil: 'networkidle',  // Wait until there are no more than 2 network connections for at least 500 ms.
+  });
   await page.getByRole('spinbutton').fill('93722');
   await page.locator('input[name="userName"]').fill('vineeth93722');
   await page.locator('input[name="password"]').fill('vineeth$93722');
@@ -37,4 +39,4 @@ async function loginToCRM(page) {
   
 }
 
-module.exports = { loginToCRM };
+export default loginToCRM

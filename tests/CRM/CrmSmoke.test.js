@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-const { loginToCRM } = require('../helpers/crmStagingLogin');
+import loginToCRM from '../helpers/crmStagingLogin';
 
 test('Smoke: CRM Login + API Tracking', async ({ page }) => {
  await loginToCRM(page);
