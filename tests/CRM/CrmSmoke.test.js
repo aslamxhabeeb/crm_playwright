@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
+const { trackAPIs } = require('../helpers/apiHelper');
 
-test ('Login', async ({page}) => {
+test ('Login in to CRM', async ({page}) => {
+
+    const { requestData, responseData } = await trackAPIs(page);
 
  await page.goto('https://crm.staging.trillium.health');
  await page.getByRole('spinbutton').fill('93722');
@@ -22,7 +25,19 @@ test ('Login', async ({page}) => {
    // Step 5: Output the captured URL (optional)
     console.error('Login Failed Unexpectedly');
     console.error('Captured URL After Login:', currentUrl);
-    console.log('Expected Url After Login:', expectedUrl );
+    console.error('Expected Url After Login:', expectedUrl);
+
+
+    // ✅ Print tracked APIs after login
+      console.log('--- API Requests Collected ---');
+      console.log(requestData);
+
+      console.log('--- API Responses Collected ---');
+      console.log(responseData);
 
      }
+
+  
 });
+
+
