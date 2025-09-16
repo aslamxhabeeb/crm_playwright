@@ -17,6 +17,8 @@ async function loginToCRM(page) {
 
   if (currentUrl === expectedUrl) {
     console.log('✅ Login Successful to:', currentUrl);
+        // await page.pause();
+
   } else {
     console.error('❌ Login Failed');
     console.error('Captured URL:', currentUrl);
@@ -32,7 +34,6 @@ async function loginToCRM(page) {
   // Return them so tests can use them
   return { requestData, responseData };
   }
-
   
 }
 
