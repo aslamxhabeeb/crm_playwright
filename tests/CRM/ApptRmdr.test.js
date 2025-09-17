@@ -1,15 +1,13 @@
-import { test, expect } from '@playwright/test';
-import loginToCRM from '../helpers/crmStagingLogin';
+import { expect } from '@playwright/test';
 
-test('Smoke: CRM Login + API Tracking', async ({ page }) => {
-await loginToCRM(page);
- 
-});
+async function createAndDeleteAppointment ( page )  {
 
-test('Create and delete appointment in CRM Scheduler', async ({ page }) => {
-  
-     // Navigate to Scheduler
-  await page.locator('.appointment__addBtn').click();
+    await page.waitForLoadState('load');
+    
+  const targetDiv = page.locator('//html/body/div[1]/div/div[3]/div[2]/div/div[1]/div/div[3]/div[2]/div');
+  await expect(targetDiv).toBeVisible();
+  await targetDiv.click();
+
 
   // Fill Appointment Reason
   const reason = page.getByRole('textbox', { name: 'Reason' });
@@ -43,14 +41,14 @@ test('Create and delete appointment in CRM Scheduler', async ({ page }) => {
   await page.getByRole('button', { name: 'Save' }).click();
 
   // Confirm Appointment
-  await page.getByText('Wright, Play').click();
+  await page.getByText('Wright, Play').first().click();
   await page.getByText('Confirm').click();
 
   // Handle No-Show + Cancel
   await page.getByText('Cancel').first().click();
   await page.getByRole('button', { name: 'No' }).click();
   await page.getByText('No-Show').click();
-  await page.getByText('Confirm').click();
+  await page.getByText('Confirm').click(); // Confirming the Appointment Agian after no show and Cancel
 
   // Appointment Actions
   await page.getByText('Appt', { exact: true }).click();
@@ -58,15 +56,17 @@ test('Create and delete appointment in CRM Scheduler', async ({ page }) => {
   await page.getByRole('button', { name: /Appointment - \d{2}\/\d{2}\/\d{4}/ }).click();
 
   // Check In / Payment / Check Out
-  await page.getByRole('button', { name: 'Check In' }).click();
+  await page.getByRole('button', { name: 'Check In' }).first().click();
   await page.getByRole('button', { name: /Check In - .*/ }).click();
   await page.getByRole('button', { name: 'Payment' }).click();
   await page.getByRole('button', { name: 'Check Out' }).click();
 
   // Diagnosis Search + Final Checkout
-  await page.getByRole('textbox', { name: 'Search dx1' }).click();
-  await page.getByRole('button', { name: 'CheckOut' }).click();
+  // await page.getByRole('textbox', { name: 'Search dx1' }).click();
+//   await page.getByRole('button', { name: 'CheckOut' }).click(); // accident i guess
+  await page.pause();
   await page.getByRole('button', { name: /Check Out - .*/ }).click();
+
 
   // Notes
   await page.getByRole('button', { name: 'Notes' }).click();
@@ -86,6 +86,7 @@ test('Create and delete appointment in CRM Scheduler', async ({ page }) => {
     .click();
   await page.getByRole('button', { name: 'delete' }).click();
   await page.getByRole('button', { name: 'Yes' }).click();
-});
+} 
+export default  createAndDeleteAppointment
 
 
