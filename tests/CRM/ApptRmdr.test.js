@@ -40,32 +40,51 @@ async function createAndDeleteAppointment ( page )  {
   // Save Patient
   await page.getByRole('button', { name: 'Save' }).click();
 
-  // Confirm Appointment
-  await page.getByText('Wright, Play').first().click();
-  await page.getByText('Confirm').click();
+  await page.getByText('Today').click();
+
+  // Clicking today because sometimes the Appointment wont load 
+    // await page.getByRole('button', { name: 'Today'}).first().click();
+
+  // Select Appointment
+  const name = page.getByText('Wright, Play').last();
+  await expect(name).toBeVisible();
+  await name.click();
+  await page.waitForLoadState();
+ 
 
   // Handle No-Show + Cancel
-  await page.getByText('Cancel').first().click();
+
+  await page.getByRole('button', { name: 'Cancel' }).click();
   await page.getByRole('button', { name: 'No' }).click();
   await page.getByText('No-Show').click();
   await page.getByText('Confirm').click(); // Confirming the Appointment Agian after no show and Cancel
 
   // Appointment Actions
+  await page.pause();
   await page.getByText('Appt', { exact: true }).click();
   await page.getByRole('button', { name: 'Appointment' }).click();
   await page.getByRole('button', { name: /Appointment - \d{2}\/\d{2}\/\d{4}/ }).click();
+  await page.pause();
 
   // Check In / Payment / Check Out
   await page.getByRole('button', { name: 'Check In' }).first().click();
-  await page.getByRole('button', { name: /Check In - .*/ }).click();
+  await page.waitForTimeout(5000); // waits for 5 seconds
+
+  await page.getByRole('button', { name: 'Check In' }).nth(1).click();
+  await page.waitForTimeout(5000); // waits for 5 seconds
+
   await page.getByRole('button', { name: 'Payment' }).click();
-  await page.getByRole('button', { name: 'Check Out' }).click();
+  await page.waitForTimeout(5000); // waits for 5 seconds
+
+  await page.getByRole('button', { name: 'Check Out' }).first().click();
+  await page.waitForTimeout(5000); // waits for 5 seconds
+
 
   // Diagnosis Search + Final Checkout
   // await page.getByRole('textbox', { name: 'Search dx1' }).click();
 //   await page.getByRole('button', { name: 'CheckOut' }).click(); // accident i guess
   await page.pause();
-  await page.getByRole('button', { name: /Check Out - .*/ }).click();
+  await page.getByRole('button', { name: 'Check Out' }).nth(1).click();
 
 
   // Notes
